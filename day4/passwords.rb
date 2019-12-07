@@ -28,50 +28,26 @@ class Passwords
 
   def double_check(password)
     arrPass = password.to_s.split("")
-    checks = []
 
-    if arrPass[0] == arrPass[1] && arrPass[0] != arrPass[2]
-      checks.append(true)
-    elsif arrPass[0] == arrPass[1] && arrPass[0] == arrPass[2]
-      checks.append(false)
-    end
-    
+    return false if arrPass.uniq.count == 1
+    return false if arrPass.uniq.count == 6
+
+    return true if arrPass[0] == arrPass[1] && arrPass[0] != arrPass[2]
+    return true if arrPass[4] == arrPass[5] && arrPass[4] != arrPass[3]
+
     if arrPass[1] == arrPass[2] && arrPass[1] != arrPass[3]
-      if arrPass[1] == arrPass[0]
-        checks.append(false)
-      else
-        checks.append(true)
-      end
-    elsif arrPass[1] == arrPass[2] && arrPass[1] == arrPass[3]
-      checks.append(false)
+      return true if arrPass[1] != arrPass[0]
     end
 
     if arrPass[2] == arrPass[3] && arrPass[2] != arrPass[4]
-      if arrPass[2] != arrPass[1]
-        checks.append(true)
-      else
-        checks.append(false)
-      end
-    elsif arrPass[2] == arrPass[3] && arrPass[2] == arrPass[4]
-      checks.append(false)
+      return true if arrPass[2] != arrPass[1]
     end
 
     if arrPass[3] == arrPass[4] && arrPass[3] != arrPass[5]
-      if arrPass[3] != arrPass[2]
-        checks.append(true)
-      else
-        checks.append(false)
-      end
-    elsif arrPass[3] == arrPass[4] && arrPass[3] == arrPass[5]
-      checks.append(false)
+      return true if arrPass[3] != arrPass[2]
     end
-
-    if arrPass[4] == arrPass[5] && arrPass[4] != arrPass[3]
-      checks.append(true)
-    else
-      checks.append(false)
-    end
-    
-    checks.any?
   end
 end
+
+# range = (128392..643281)
+# puts Passwords.new.guesser(range).count
