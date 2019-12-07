@@ -1,6 +1,14 @@
 class Intcode
   def runner(opcode, pos)
-    op = opcode[pos]
+    oparr = opcode[pos].to_s.chars.map(&:to_i)
+    if oparr.count > 1
+      op = [oparr[-2].to_s,oparr[-1].to_s].join("").to_i
+      p1 = oparr[-3]
+      p2 = oparr[-4]
+      p3 = oparr[-4]
+    else
+      op = oparr[0]
+    end
     a = opcode[pos+1]
     b = opcode[pos+2]
     out = opcode[pos+3]
@@ -17,6 +25,7 @@ class Intcode
       exit
     else
       puts "oops"
+      exit
     end
 
     runner(opcode, pos + 4)
