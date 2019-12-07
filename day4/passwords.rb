@@ -19,13 +19,7 @@ class Passwords
 
   def descend_check(password)
     arrPass = password.to_s.split("")
-    checks = []
-    arrPass.each_with_index do |p, i|
-      if i > 0
-        checks.append(arrPass[i].to_i >= arrPass[i-1].to_i)
-      end
-    end
-    checks.all?
+    arrPass == arrPass.sort
   end
 
   def double?(password)
