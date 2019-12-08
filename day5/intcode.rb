@@ -1,4 +1,8 @@
 class Intcode
+  def initialize
+    @out = []
+  end
+
   def runner(opcode, pos=0, input="")
     oparr = opcode[pos].to_s.chars.map(&:to_i)
     if oparr.count > 1
@@ -64,11 +68,14 @@ class Intcode
         val = opcode[loc]
       end
       # puts opcode.inspect
-      puts val
+      @out.append(val)
       next_op = pos + 2
     elsif op == 99
       # puts "end"
-      return opcode
+      return {
+        out: @out,
+        final_opcode: opcode
+      }
       exit
     else
       puts op
