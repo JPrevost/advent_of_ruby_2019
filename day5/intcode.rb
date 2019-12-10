@@ -75,16 +75,38 @@ class Intcode
     # it sets the instruction pointer to the value from the second 
     # parameter. Otherwise, it does nothing.
     elsif op == 5
-      puts "unimplemeted op 5"
-      exit
+      if p1 && p1 == 1 # immediate mode
+        if opcode[pos + 1] != 0
+          pos = opcode[pos + 2]
+        else
+          pos = pos + 3
+        end
+      else
+        if opcode[opcode[pos + 1]] != 0
+          pos = opcode[opcode[pos + 2]]
+        else
+          pos = pos + 3
+        end
+      end
 
     # Opcode 6 is jump-if-false: if the first parameter is zero, it 
     # sets the instruction pointer to the value from the second 
     # parameter. Otherwise, it does nothing.
     elsif op == 6
-      puts "unimplemeted op 6"
-      exit
-
+      if p1 && p1 == 1 # immediate mode
+        if opcode[pos + 1] == 0
+          pos = opcode[pos + 2]
+        else
+          pos = pos + 3
+        end
+      else
+        if opcode[opcode[pos + 1]] == 0
+          pos = opcode[opcode[pos + 2]]
+        else
+          pos = pos + 3
+        end
+      end
+  
     # Opcode 7 is less than: if the first parameter is less than the 
     # second parameter, it stores 1 in the position given by the third 
     # parameter. Otherwise, it stores 0.

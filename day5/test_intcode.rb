@@ -152,9 +152,36 @@ class TestIntcode < MiniTest::Test
   # Here are some jump tests that take an input, then output 0 if the input
   # was zero or 1 if the input was non-zero:
   # 3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9 (using position mode)
+  def test_jump_position_mode
+    opcode = [3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9]
+    expected = [1]
+    input = 3
+    op = Intcode.new.runner(opcode, 0, input)
+    assert_equal(expected, op[:out])
 
+    opcode = [3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9]
+    expected = [0]
+    input = 0
+    op = Intcode.new.runner(opcode, 0, input)
+    assert_equal(expected, op[:out])
+  end
 
-  
   # 3,3,1105,-1,9,1101,0,0,12,4,12,99,1 (using immediate mode)
+  def test_jump_immediate_mode
+    opcode = [3,3,1105,-1,9,1101,0,0,12,4,12,99,1]
+    expected = [1]
+    input = 3
+    op = Intcode.new.runner(opcode, 0, input)
+    assert_equal(expected, op[:out])
 
+    opcode = [3,3,1105,-1,9,1101,0,0,12,4,12,99,1]
+    expected = [0]
+    input = 0
+    op = Intcode.new.runner(opcode, 0, input)
+    assert_equal(expected, op[:out])
+  end
+
+  def test_larger_example
+
+  end
 end
