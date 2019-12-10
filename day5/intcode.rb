@@ -14,6 +14,7 @@ class Intcode
       op = oparr[0]
     end
      
+    # puts [op, p1, p2, p3].inspect
 
     if op == 1 || op == 2
       if p1 && p1 == 1
@@ -77,13 +78,21 @@ class Intcode
     elsif op == 5
       if p1 && p1 == 1 # immediate mode
         if opcode[pos + 1] != 0
-          pos = opcode[pos + 2]
+          if p2 && p2 == 1
+            pos = opcode[pos + 2]
+          else
+            pos = opcode[opcode[pos + 2]]
+          end
         else
           pos = pos + 3
         end
       else
         if opcode[opcode[pos + 1]] != 0
-          pos = opcode[opcode[pos + 2]]
+          if p2 && p2 == 1
+            pos = opcode[pos + 2]
+          else
+            pos = opcode[opcode[pos + 2]]
+          end
         else
           pos = pos + 3
         end
@@ -95,13 +104,21 @@ class Intcode
     elsif op == 6
       if p1 && p1 == 1 # immediate mode
         if opcode[pos + 1] == 0
-          pos = opcode[pos + 2]
+          if p2 && p2 == 1
+            pos = opcode[pos + 2]
+          else
+            pos = opcode[opcode[pos + 2]]
+          end
         else
           pos = pos + 3
         end
       else
-        if opcode[opcode[pos + 1]] == 0
-          pos = opcode[opcode[pos + 2]]
+        if opcode[opcode[pos + 1]] == 0            
+          if p2 && p2 == 1
+            pos = opcode[pos + 2]
+          else
+            pos = opcode[opcode[pos + 2]]
+          end
         else
           pos = pos + 3
         end
@@ -176,6 +193,7 @@ class Intcode
       exit
     else
       puts op
+      puts @out
       puts opcode.inspect
       puts "oops"
       exit
