@@ -79,8 +79,10 @@ class Intcode
       if p1 && p1 == 1 # immediate mode
         if opcode[pos + 1] != 0
           if p2 && p2 == 1
+            # puts "op 5 jump imm imm"
             pos = opcode[pos + 2]
           else
+            # puts "op 5 jump imm pos"
             pos = opcode[opcode[pos + 2]]
           end
         else
@@ -89,8 +91,10 @@ class Intcode
       else
         if opcode[opcode[pos + 1]] != 0
           if p2 && p2 == 1
+            # puts "op 5 jump pos imm"
             pos = opcode[pos + 2]
           else
+            # puts "op 5 jump pos pos"
             pos = opcode[opcode[pos + 2]]
           end
         else
@@ -105,8 +109,10 @@ class Intcode
       if p1 && p1 == 1 # immediate mode
         if opcode[pos + 1] == 0
           if p2 && p2 == 1
+            # puts "op 6 jump imm imm"
             pos = opcode[pos + 2]
           else
+            # puts "op 6 jump imm pos"
             pos = opcode[opcode[pos + 2]]
           end
         else
@@ -115,8 +121,10 @@ class Intcode
       else
         if opcode[opcode[pos + 1]] == 0            
           if p2 && p2 == 1
+            # puts "op 6 jump pos imm"
             pos = opcode[pos + 2]
           else
+            # puts "op 6 jump pos pos"
             pos = opcode[opcode[pos + 2]]
           end
         else
@@ -130,25 +138,49 @@ class Intcode
     elsif op == 7
       if p1 && p1 == 1 # immediate mode
         a = opcode[pos + 1]
-        b = opcode[pos + 2]
+        if p2 && p2 == 1
+          b = opcode[pos + 2]
+        else
+          b = opcode[opcode[pos + 2]]
+        end
 
         if a < b
-          opcode[pos + 3] = 1
+          if p3 && p3 == 1
+            opcode[pos + 3] = 1
+          else
+            opcode[opcode[pos + 3]] = 1
+          end
           @out.append(1)
         else
-          opcode[pos + 3] = 0
+          if p3 && p3 == 1
+            opcode[pos + 3] = 0
+          else
+            opcode[opcode[pos + 3]] = 0
+          end
           @out.append(0)
         end
       else
 
         a = opcode[opcode[pos + 1]]
-        b = opcode[opcode[pos + 2]]
+        if p2 && p2 == 1
+          b = opcode[pos + 2]
+        else
+          b = opcode[opcode[pos + 2]]
+        end
 
         if a < b
-          opcode[pos + 3] = 1
+          if p3 && p3 == 1
+            opcode[pos + 3] = 1
+          else
+            opcode[opcode[pos + 3]] = 1
+          end
           @out.append(1)
         else
-          opcode[pos + 3] = 0
+          if p3 && p3 == 1
+            opcode[pos + 3] = 0
+          else
+            opcode[opcode[pos + 3]] = 0
+          end
           @out.append(0)
         end
       end
@@ -161,24 +193,48 @@ class Intcode
     elsif op == 8
       if p1 && p1 == 1 # immediate mode
         a = opcode[pos + 1]
-        b = opcode[pos + 2]
+        if p2 && p2 == 1
+          b = opcode[pos + 2]
+        else
+          b = opcode[opcode[pos + 2]]
+        end
 
         if a == b
-          opcode[pos + 3] = 1
+          if p3 && p3 == 1
+            opcode[pos + 3] = 1
+          else
+            opcode[opcode[pos + 3]] = 1
+          end
           @out.append(1)
         else
-          opcode[pos + 3] = 0
+          if p3 && p3 == 1
+            opcode[pos + 3] = 0
+          else
+            opcode[opcode[pos + 3]] = 0
+          end
           @out.append(0)
         end
       else
         a = opcode[opcode[pos + 1]]
-        b = opcode[opcode[pos + 2]]
+        if p2 && p2 == 1
+          b = opcode[pos + 2]
+        else
+          b = opcode[opcode[pos + 2]]
+        end
 
         if a == b
-          opcode[pos + 3] = 1
+          if p3 && p3 == 1
+            opcode[pos + 3] = 1
+          else
+            opcode[opcode[pos + 3]] = 1
+          end
           @out.append(1)
         else
-          opcode[pos + 3] = 0
+          if p3 && p3 == 1
+            opcode[pos + 3] = 0
+          else
+            opcode[opcode[pos + 3]] = 0
+          end
           @out.append(0)
         end
       end
