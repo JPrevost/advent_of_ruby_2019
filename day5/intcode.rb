@@ -16,13 +16,7 @@ class Intcode
      
 
     if op == 1 || op == 2
-      # x = opcode[pos+1]
-      # a = opcode[x]
-
-      # x = opcode[pos+2]
-      # b = opcode[x]
       if p1 && p1 == 1
-        # puts "p1 1"
         a = opcode[pos+1]
       else
         x = opcode[pos+1]
@@ -30,8 +24,7 @@ class Intcode
       end
 
       if p2 && p2 == 1
-        # puts "p2 1"
-        b = opcode[pos+2]
+          b = opcode[pos+2]
       else
         x = opcode[pos+2]
         b = opcode[x]
@@ -41,14 +34,20 @@ class Intcode
     end
 
 
+    # add
     if op == 1
-      # puts "add"÷ 
       opcode[out] = a + b
-      next_op = pos + 4
+      pos = pos + 4
+            
+    # multiply
     elsif op == 2
-      # puts "mult"÷ 
       opcode[out] = a * b
-      next_op = pos + 4
+      pos = pos + 4
+
+    # Opcode 3 takes a single integer as input and saves it to the 
+    # position given by its only parameter. For example, the 
+    # instruction 3,50 would take an input value and store it at 
+    # address 50.
     elsif op == 3
       if p1 && p1 == 1
         puts "handle op3 non positional"
@@ -56,9 +55,10 @@ class Intcode
         loc = opcode[pos+1]
         opcode[loc] = input
       end
-      next_op = pos + 2
+      pos = pos + 2
       
-      # puts opcode.inspect, next_op
+    # Opcode 4 outputs the value of its only parameter. For example, 
+    # the instruction 4,50 would output the value at address 50.
     elsif op == 4
       # puts "pos #{pos}"
       if p1 && p1 == 1
@@ -69,9 +69,84 @@ class Intcode
       end
       # puts opcode.inspect
       @out.append(val)
-      next_op = pos + 2
+      pos = pos + 2
+    
+    # Opcode 5 is jump-if-true: if the first parameter is non-zero, 
+    # it sets the instruction pointer to the value from the second 
+    # parameter. Otherwise, it does nothing.
+    elsif op == 5
+      puts "unimplemeted op 5"
+      exit
+
+    # Opcode 6 is jump-if-false: if the first parameter is zero, it 
+    # sets the instruction pointer to the value from the second 
+    # parameter. Otherwise, it does nothing.
+    elsif op == 6
+      puts "unimplemeted op 6"
+      exit
+
+    # Opcode 7 is less than: if the first parameter is less than the 
+    # second parameter, it stores 1 in the position given by the third 
+    # parameter. Otherwise, it stores 0.
+    elsif op == 7
+      if p1 && p1 == 1 # immediate mode
+        a = opcode[pos + 1]
+        b = opcode[pos + 2]
+
+        if a < b
+          opcode[pos + 3] = 1
+          @out.append(1)
+        else
+          opcode[pos + 3] = 0
+          @out.append(0)
+        end
+      else
+
+        a = opcode[opcode[pos + 1]]
+        b = opcode[opcode[pos + 2]]
+
+        if a < b
+          opcode[pos + 3] = 1
+          @out.append(1)
+        else
+          opcode[pos + 3] = 0
+          @out.append(0)
+        end
+      end
+      pos = pos +4
+
+
+    # Opcode 8 is equals: if the first parameter is equal to the second
+    # parameter, it stores 1 in the position given by the third parameter.
+    # Otherwise, it stores 0
+    elsif op == 8
+      if p1 && p1 == 1 # immediate mode
+        a = opcode[pos + 1]
+        b = opcode[pos + 2]
+
+        if a == b
+          opcode[pos + 3] = 1
+          @out.append(1)
+        else
+          opcode[pos + 3] = 0
+          @out.append(0)
+        end
+      else
+        a = opcode[opcode[pos + 1]]
+        b = opcode[opcode[pos + 2]]
+
+        if a == b
+          opcode[pos + 3] = 1
+          @out.append(1)
+        else
+          opcode[pos + 3] = 0
+          @out.append(0)
+        end
+      end
+      pos = pos + 4
+
+
     elsif op == 99
-      # puts "end"
       return {
         out: @out,
         final_opcode: opcode
@@ -83,7 +158,7 @@ class Intcode
       puts "oops"
       exit
     end
-    runner(opcode, next_op)
+    runner(opcode, pos, input)
   end
 
   def futz(memory)
@@ -98,6 +173,8 @@ class Intcode
     end
   end
 
+
+
   def guess(memory, noun, verb)
     memory[1] = noun
     memory[2] = verb
@@ -108,7 +185,3 @@ class Intcode
     end
   end
 end
-
-# opcode = [1,9,10,3,2,3,11,0,99,30,40,50]
-# pos = 0
-# Opcode.new.runner(opcode, pos)

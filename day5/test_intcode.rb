@@ -78,4 +78,83 @@ class TestIntcode < MiniTest::Test
     op = Intcode.new.runner(opcode, 0, input)
     assert_equal(expected, op[:out].last)
   end
+
+  # 3,9,8,9,10,9,4,9,99,-1,8
+  # Using position mode, consider whether the input is equal to 8;
+  # output 1 (if it is) or 0 (if it is not).
+  def test_example_one
+    opcode = [3,9,8,9,10,9,4,9,99,-1,8]
+    expected = [1, 8]
+    input = 8
+    op = Intcode.new.runner(opcode, 0, input)
+    assert_equal(expected, op[:out])
+
+    opcode = [3,9,8,9,10,9,4,9,99,-1,8]
+    expected = [0, 100]
+    input = 100
+    op = Intcode.new.runner(opcode, 0, input)
+    assert_equal(expected, op[:out])
+  end
+
+  # 3,3,1108,-1,8,3,4,3,99
+  # Using immediate mode, consider whether the input is equal to 8;
+  # output 1 (if it is) or 0 (if it is not).
+  def test_example_three
+    opcode = [3,3,1108,-1,8,3,4,3,99]
+    expected = [1, 8]
+    input = 8
+    op = Intcode.new.runner(opcode, 0, input)
+    assert_equal(expected, op[:out])
+
+    opcode = [3,3,1108,-1,8,3,4,3,99]
+    expected = [0, 123]
+    input = 123
+    op = Intcode.new.runner(opcode, 0, input)
+    assert_equal(expected, op[:out])
+  end
+
+  # op7 & 8
+
+  # 3,9,7,9,10,9,4,9,99,-1,8
+  # Using position mode, consider whether the input is less than 8;
+  # output 1 (if it is) or 0 (if it is not).
+  def test_example_two
+    opcode = [3,9,7,9,10,9,4,9,99,-1,8]
+    expected = [1, 3]
+    input = 3
+    op = Intcode.new.runner(opcode, 0, input)
+    assert_equal(expected, op[:out])
+
+    opcode = [3,9,7,9,10,9,4,9,99,-1,8]
+    expected = [0, 8]
+    input = 8
+    op = Intcode.new.runner(opcode, 0, input)
+    assert_equal(expected, op[:out])
+  end
+
+  # 3,3,1107,-1,8,3,4,3,99
+  # Using immediate mode,consider whether the input is less than 8; 
+  # output 1 (if it is) or 0 (if it is not).
+  def test_example_four
+    opcode = [3,3,1107,-1,8,3,4,3,99]
+    expected = [1, 3]
+    input = 3
+    op = Intcode.new.runner(opcode, 0, input)
+    assert_equal(expected, op[:out])
+
+    opcode = [3,3,1107,-1,8,3,4,3,99]
+    expected = [0, 8]
+    input = 8
+    op = Intcode.new.runner(opcode, 0, input)
+    assert_equal(expected, op[:out])
+  end
+
+  # Here are some jump tests that take an input, then output 0 if the input
+  # was zero or 1 if the input was non-zero:
+  # 3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9 (using position mode)
+
+
+  
+  # 3,3,1105,-1,9,1101,0,0,12,4,12,99,1 (using immediate mode)
+
 end
