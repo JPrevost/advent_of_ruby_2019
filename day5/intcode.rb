@@ -1,5 +1,6 @@
 class Intcode
   def initialize
+    @input_pos = 0
     @out = []
   end
 
@@ -54,7 +55,13 @@ class Intcode
         puts "handle op3 non positional"
       else
         loc = opcode[pos+1]
-        opcode[loc] = input
+
+        if input.is_a?(Array)
+          opcode[loc] = input[@input_pos]
+          @input_pos += 1
+        else
+          opcode[loc] = input
+        end
       end
       pos = pos + 2
       
