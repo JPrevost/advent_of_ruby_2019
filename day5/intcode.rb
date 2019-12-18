@@ -256,7 +256,7 @@ class Intcode
       exit
     else
       puts op
-      puts @out
+      puts @out.inspect
       puts opcode.inspect
       puts "oops"
       exit
